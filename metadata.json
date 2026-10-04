@@ -1,0 +1,6 @@
+{
+  "name": "日輪刀鍛冶工房 - 刀のお手入れ＆お仕置きチェイス",
+  "description": "サビ落とし・研磨、猩々緋鉱石からの鍛造、折れた刀の修復、刀を折った鬼殺隊士を追いかけ回す刀鍛冶の職人体験ゲーム",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
