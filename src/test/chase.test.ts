@@ -15,9 +15,9 @@ export function runChaseTests() {
       scenario('みたらし団子を拾って超加速し、逃げる隊士に追いつく', () => {
         let state: ChaseEntityState;
 
-        given('初期距離60mで隊士を追いかける怒りの鍛冶師がいる', () => {
+        given('初期距離30mで隊士を追いかける怒りの鍛冶師がいる', () => {
           state = ChaseDomainService.createInitialState('竈門炭治郎');
-          expect(state.distance).toBe(60);
+          expect(state.distance).toBe(30);
           expect(state.isCaught).toBeFalsy();
         });
 

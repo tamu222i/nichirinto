@@ -43,16 +43,16 @@ export class ChaseDomainService {
       rageLevel: 80,
       dangoBoostTimer: 0,
       dangoCount: 0,
-      distance: 60, // 60mからスタート
+      distance: 30, // 30mからスタート（すぐ追いつける）
       isCaught: false,
       punishHits: 0,
       isGameOver: false,
       gameTime: 0,
       obstacles: [
-        { id: 'obs_1', type: 'DANGO', x: 260, width: 24, height: 24, cleared: false },
-        { id: 'obs_2', type: 'ROCK', x: 420, width: 30, height: 26, cleared: false },
-        { id: 'obs_3', type: 'DANGO', x: 580, width: 24, height: 24, cleared: false },
-        { id: 'obs_4', type: 'LOG', x: 740, width: 34, height: 32, cleared: false },
+        { id: 'obs_1', type: 'DANGO', x: 200, width: 28, height: 28, cleared: false },
+        { id: 'obs_2', type: 'ROCK', x: 380, width: 28, height: 24, cleared: false },
+        { id: 'obs_3', type: 'DANGO', x: 520, width: 28, height: 28, cleared: false },
+        { id: 'obs_4', type: 'LOG', x: 680, width: 30, height: 26, cleared: false },
       ],
     };
   }
@@ -73,14 +73,14 @@ export class ChaseDomainService {
 
     state.gameTime += deltaSec;
 
-    // 速度計算: 通常速度 18m/s、団子ブースト中 32m/s
-    let playerSpeed = 20;
+    // 速度計算: 通常速度 25m/s、団子ブースト中 45m/s
+    let playerSpeed = 25;
     if (state.dangoBoostTimer > 0) {
       state.dangoBoostTimer = Math.max(0, state.dangoBoostTimer - deltaSec);
-      playerSpeed = 34; // 怒濤の猛ダッシュ
+      playerSpeed = 46; // 怒濤の超猛ダッシュ
     }
 
-    const slayerSpeed = 19; // 必死に逃げる隊士の速度
+    const slayerSpeed = 15; // 逃げる隊士の速度
 
     // 距離の短縮
     const relativeSpeed = playerSpeed - slayerSpeed;
@@ -92,11 +92,11 @@ export class ChaseDomainService {
       obs.x -= scrollDelta;
 
       // 衝突判定
-      if (!obs.cleared && obs.x <= state.playerX + 28 && obs.x + obs.width >= state.playerX) {
+      if (!obs.cleared && obs.x <= state.playerX + 32 && obs.x + obs.width >= state.playerX) {
         if (obs.type === 'DANGO') {
           obs.cleared = true;
           state.dangoCount += 1;
-          state.dangoBoostTimer = 4.0; // 4秒ブースト
+          state.dangoBoostTimer = 7.0; // 7秒間ロングブースト
           state.rageLevel = Math.min(100, state.rageLevel + 15);
           return {
             event: 'DANGO_EATEN',
@@ -105,9 +105,9 @@ export class ChaseDomainService {
         } else if (obs.type === 'ROCK' || obs.type === 'LOG') {
           if (!state.isJumping) {
             obs.cleared = true;
-            // つまずいて距離が離れる
-            state.distance = Math.min(100, state.distance + 12);
-            state.rageLevel = Math.min(100, state.rageLevel + 25);
+            // つまずいて距離が少し離れる（以前の+12から+3に大幅緩和）
+            state.distance = Math.min(60, state.distance + 3);
+            state.rageLevel = Math.min(100, state.rageLevel + 10);
             return {
               event: 'COLLIDED',
               message: '障害物につまずいた！「ぐぬぬ…！待てええええ！」',

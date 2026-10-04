@@ -30,12 +30,12 @@ export const ForgingGame: React.FC<ForgingGameProps> = ({ onSwordForged }) => {
   const [awakenedSword, setAwakenedSword] = useState<SwordAggregate | null>(null);
   const [revealColorProgress, setRevealColorProgress] = useState<number>(0); // 0〜100%
 
-  // 自然放熱タイマー（HEATINGステップ中）
+  // 自然放熱タイマー（HEATINGステップ中: タブレットで焦らないよう非常にゆっくり放熱）
   useEffect(() => {
     if (step !== 'HEATING') return;
     const interval = setInterval(() => {
-      setTemperature((prev) => ForgingDomainService.coolFurnace(prev, 0.2));
-    }, 200);
+      setTemperature((prev) => (prev > 950 ? Math.max(900, prev - 2) : prev));
+    }, 1200);
     return () => clearInterval(interval);
   }, [step]);
 
