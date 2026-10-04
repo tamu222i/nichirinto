@@ -10,7 +10,6 @@ import { ForgingGame } from './components/ForgingGame';
 import { RepairGame } from './components/RepairGame';
 import { ChaseGame } from './components/ChaseGame';
 import { SwordGallery } from './components/SwordGallery';
-import { BddTestRunnerModal } from './components/BddTestRunnerModal';
 import { SwordAggregate } from './domain/models/Sword';
 import { SwordRepository } from './domain/repositories/SwordRepository';
 import { soundFX } from './services/audio';
@@ -19,7 +18,6 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<ActiveTab>('MAINTENANCE');
   const [swords, setSwords] = useState<SwordAggregate[]>([]);
   const [currentSwordIndex, setCurrentSwordIndex] = useState<number>(0);
-  const [isTestModalOpen, setIsTestModalOpen] = useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(false);
 
   // 初期ロード
@@ -69,7 +67,6 @@ export default function App() {
       <Navigation
         activeTab={activeTab}
         onSelectTab={setActiveTab}
-        onOpenTestModal={() => setIsTestModalOpen(true)}
         isMuted={isMuted}
         onToggleMute={handleToggleMute}
       />
@@ -114,25 +111,16 @@ export default function App() {
         )}
       </main>
 
-      {/* フッター（Anti-slop: 控えめな情報のみ） */}
+      {/* フッター */}
       <footer className="border-t border-neutral-900 px-6 py-6 text-center text-xs text-neutral-500">
-        <div className="flex items-center justify-center gap-2 mb-1">
+        <div className="flex items-center justify-center gap-2">
           <span>刀鍛冶の里</span>
           <span aria-hidden="true">·</span>
           <span>鋼鐵塚工房</span>
           <span aria-hidden="true">·</span>
           <span>日輪刀お手入れ・鍛造・修復・追走録</span>
         </div>
-        <div className="text-[11px] text-neutral-600">
-          スキーマ駆動・簡易DDD アーキテクチャ · BDD/TDD サイクル準拠
-        </div>
       </footer>
-
-      {/* BDD/TDD テスト実行モーダル */}
-      <BddTestRunnerModal
-        isOpen={isTestModalOpen}
-        onClose={() => setIsTestModalOpen(false)}
-      />
     </div>
   );
 }

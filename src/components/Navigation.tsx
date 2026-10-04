@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { Volume2, VolumeX, Terminal } from 'lucide-react';
+import { Volume2, VolumeX } from 'lucide-react';
 import { soundFX } from '../services/audio';
 
 export type ActiveTab = 'MAINTENANCE' | 'FORGING' | 'REPAIR' | 'CHASE' | 'GALLERY';
@@ -12,7 +12,6 @@ export type ActiveTab = 'MAINTENANCE' | 'FORGING' | 'REPAIR' | 'CHASE' | 'GALLER
 interface NavigationProps {
   activeTab: ActiveTab;
   onSelectTab: (tab: ActiveTab) => void;
-  onOpenTestModal: () => void;
   isMuted: boolean;
   onToggleMute: () => void;
 }
@@ -20,7 +19,6 @@ interface NavigationProps {
 export const Navigation: React.FC<NavigationProps> = ({
   activeTab,
   onSelectTab,
-  onOpenTestModal,
   isMuted,
   onToggleMute,
 }) => {
@@ -87,14 +85,6 @@ export const Navigation: React.FC<NavigationProps> = ({
           aria-label={isMuted ? '音声を有効化' : '音声をミュート'}
         >
           {isMuted ? <VolumeX className="w-5 h-5 text-neutral-500" /> : <Volume2 className="w-5 h-5 text-amber-500" />}
-        </button>
-
-        <button
-          onClick={onOpenTestModal}
-          className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-neutral-300 bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 rounded-lg transition-colors whitespace-nowrap cursor-pointer"
-        >
-          <Terminal className="w-3.5 h-3.5 text-emerald-400" />
-          <span>BDD/TDD 検証ラボ</span>
         </button>
       </div>
     </header>
